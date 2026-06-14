@@ -15,7 +15,6 @@
       --dark:    #3d2e22;
       --gold:    #b89a6a;
       --white:   #ffffff;
-      --highlight: #f3ede2;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -26,15 +25,15 @@
       font-family: 'Jost', sans-serif;
       font-weight: 300;
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* ── Header ── */
     header {
       text-align: center;
       padding: 4rem 1.5rem 2.5rem;
       background: var(--white);
       border-bottom: 1px solid var(--beige2);
-      position: relative;
     }
     header::after {
       content: '';
@@ -45,7 +44,6 @@
       margin: 1.5rem auto 0;
     }
     .eyebrow {
-      font-family: 'Jost', sans-serif;
       font-size: 0.7rem;
       letter-spacing: 0.25em;
       text-transform: uppercase;
@@ -57,7 +55,6 @@
       font-size: clamp(2.4rem, 6vw, 4rem);
       font-weight: 300;
       font-style: italic;
-      line-height: 1.1;
       color: var(--dark);
     }
     .date {
@@ -67,11 +64,17 @@
       color: var(--brown);
     }
 
-    /* ── Search ── */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem 1.5rem 5rem;
+    }
+
     .search-wrap {
-      max-width: 480px;
-      margin: 2.5rem auto;
-      padding: 0 1.5rem;
+      width: 100%;
+      max-width: 440px;
     }
     .search-label {
       display: block;
@@ -80,6 +83,7 @@
       text-transform: uppercase;
       color: var(--brown);
       margin-bottom: 0.6rem;
+      text-align: center;
     }
     .search-box {
       display: flex;
@@ -91,11 +95,11 @@
     }
     .search-box input {
       flex: 1;
-      padding: 0.85rem 1rem;
+      padding: 0.95rem 1.1rem;
       border: none;
       outline: none;
       font-family: 'Jost', sans-serif;
-      font-size: 0.95rem;
+      font-size: 1rem;
       font-weight: 300;
       color: var(--dark);
       background: transparent;
@@ -113,111 +117,161 @@
     }
     .clear-btn.visible { display: block; }
 
-    .result-banner {
-      text-align: center;
-      font-size: 0.85rem;
+    .result-area {
+      margin-top: 2rem;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    /* ── Mehrere Treffer ── */
+    .multi-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
       color: var(--brown);
-      margin-top: 0.7rem;
-      min-height: 1.2em;
-      letter-spacing: 0.05em;
-    }
-    .result-banner strong {
-      color: var(--dark);
-      font-weight: 500;
-    }
-
-    /* ── Tables grid ── */
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 1.5rem 5rem;
-    }
-
-    .section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1rem;
-      font-weight: 400;
-      font-style: italic;
-      letter-spacing: 0.08em;
-      color: var(--sand);
       text-align: center;
-      margin: 2.5rem 0 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .suggestions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .suggestion-btn {
+      background: var(--white);
+      border: 1px solid var(--beige2);
+      border-radius: 2px;
+      padding: 0.8rem 1.1rem;
+      text-align: left;
+      cursor: pointer;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--dark);
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .suggestion-btn:hover {
+      border-color: var(--gold);
+      background: var(--beige);
+    }
+    .suggestion-btn .s-name { display: block; }
+    .suggestion-btn .s-table {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: var(--sand);
+      text-transform: uppercase;
+      margin-top: 0.15rem;
     }
 
-    .tables-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1.25rem;
-    }
-
-    .table-card {
+    /* ── Ergebnis-Karte ── */
+    .result-card {
       background: var(--white);
       border: 1px solid var(--beige2);
       border-radius: 3px;
       overflow: hidden;
-      transition: box-shadow 0.2s;
+      animation: fadeIn 0.3s ease;
     }
-    .table-card:hover {
-      box-shadow: 0 4px 20px rgba(61,46,34,0.07);
-    }
-    .table-card.dimmed {
-      opacity: 0.35;
-    }
-    .table-card.highlighted {
-      border-color: var(--gold);
-      box-shadow: 0 4px 20px rgba(184,154,106,0.18);
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    .table-header {
-      background: var(--beige);
-      padding: 0.85rem 1.1rem;
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
+    .card-top {
+      padding: 2rem 2rem 1.75rem;
+      text-align: center;
       border-bottom: 1px solid var(--beige2);
     }
-    .table-name {
+    .greeting {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.25rem;
-      font-weight: 400;
+      font-size: clamp(1.4rem, 4vw, 1.9rem);
+      font-weight: 300;
+      font-style: italic;
       color: var(--dark);
+      line-height: 1.35;
+      margin-bottom: 1.25rem;
     }
-    .table-count {
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
+    .table-badge {
+      display: inline-block;
+      background: var(--beige);
+      border: 1px solid var(--beige2);
+      border-radius: 2px;
+      padding: 0.75rem 2rem;
+      margin-bottom: 1.25rem;
+    }
+    .table-badge .label {
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--brown);
+      display: block;
+      margin-bottom: 0.2rem;
     }
-
-    .guest-list {
-      list-style: none;
-      padding: 0.5rem 0;
-    }
-    .guest-item {
-      padding: 0.45rem 1.1rem;
-      font-size: 0.88rem;
-      line-height: 1.35;
+    .table-badge .number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      font-weight: 300;
       color: var(--dark);
-      border-bottom: 1px solid var(--cream);
-      transition: background 0.15s;
+      line-height: 1;
     }
-    .guest-item:last-child { border-bottom: none; }
-    .guest-item.match {
-      background: var(--highlight);
-      font-weight: 500;
+    .divider {
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+      margin: 0 auto 1rem;
     }
-    .guest-item.frei {
-      color: var(--sand);
-      font-style: italic;
+    .message {
+      font-size: 0.85rem;
+      color: var(--brown);
+      line-height: 1.7;
     }
 
-    /* ── Couple highlight ── */
-    .guest-item.couple {
+    /* ── Tischpartner ── */
+    .card-bottom {
+      padding: 1.25rem 1.5rem 1.5rem;
+    }
+    .partners-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sand);
+      margin-bottom: 0.85rem;
+      text-align: center;
+    }
+    .partners-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .partners-list li {
+      padding: 0.4rem 0.6rem;
+      font-size: 0.88rem;
+      border-bottom: 1px solid var(--cream);
+      color: var(--dark);
+    }
+    .partners-list li:last-child { border-bottom: none; }
+    .partners-list li.me {
       color: var(--gold);
       font-weight: 500;
     }
 
-    /* ── Footer ── */
+    /* ── Nicht gefunden ── */
+    .not-found {
+      text-align: center;
+      color: var(--sand);
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      margin-top: 0.5rem;
+    }
+    .not-found em {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--brown);
+      margin-bottom: 0.4rem;
+    }
+
     footer {
       text-align: center;
       padding: 2rem 1.5rem;
@@ -238,17 +292,15 @@
   <p class="date">11. Juli 2026</p>
 </header>
 
-<div class="search-wrap">
-  <label class="search-label" for="search">Namen suchen</label>
-  <div class="search-box">
-    <input id="search" type="text" placeholder="z.B. Muster …" autocomplete="off" />
-    <button class="clear-btn" id="clearBtn" aria-label="Suche löschen">✕</button>
-  </div>
-  <p class="result-banner" id="resultBanner"></p>
-</div>
-
 <main>
-  <div class="tables-grid" id="tablesGrid"></div>
+  <div class="search-wrap">
+    <label class="search-label" for="search">Deinen Namen eingeben</label>
+    <div class="search-box">
+      <input id="search" type="text" placeholder="z.B. Maria Muster …" autocomplete="off" />
+      <button class="clear-btn" id="clearBtn" aria-label="Suche löschen">✕</button>
+    </div>
+  </div>
+  <div class="result-area" id="resultArea"></div>
 </main>
 
 <footer>
@@ -257,137 +309,114 @@
 
 <script>
   const tables = [
-    {
-      name: "Tisch 1",
-      guests: ["Hoang Luong Duc", "Sina Ziegler", "Justus Lemp", "Hannah Meister", "Finn Pietsch", "Lauritz Heller", "Jana"]
-    },
-    {
-      name: "Tisch 2",
-      guests: ["Steffen Henschel", "Leni Fröhlich", "Maxim Fröhlich", "Lahja Zoé", "Bastian Bock", "— frei —", "Martin Fröhlich", "Larissa Fröhlich", "Nico Kaczmarczyk", "Alina Bock"]
-    },
-    {
-      name: "Tisch 3",
-      guests: ["Tarek Fiebrandt", "Lynn Buttkus", "Greta Thürnau", "Max Peleikis", "Patricia", "Max Schuldt", "Nele Walter", "Torge Ramm", "Jan-Philipp Scheibe", "Anneke Laß", "Mats Timm", "Wencke Bock"]
-    },
-    {
-      name: "Tisch 4",
-      guests: ["Heike Thürnau", "Dirk Groß", "Maren Gottschlich", "Sven Thürnau", "Petra Groß", "Stefan Gottschlich"]
-    },
-    {
-      name: "Tisch 5 · Brautpaar",
-      guests: ["Jan Groß-Ziegler", "Moritz Gottschlich", "Tim", "Isa", "Sabine Gelhar", "Jan Gelhar", "Evy Groß-Ziegler", "Tara Spindler", "Niklas Warnecke", "Laura Warnecke", "Moritz Supinski", "Elli Bothe"],
-      couple: ["Tim", "Isa"]
-    },
-    {
-      name: "Tisch 6",
-      guests: ["Nicole Pahl", "Christian Schäfer", "Oma Moni", "Kerstin Drömann", "Holger Warnecke", "Stephan Pahl", "Martina Schäfer", "Oma Anne", "Johannes Drömann", "Babette Lindacher-Weis"]
-    },
-    {
-      name: "Tisch 7",
-      guests: ["Louisa Schlüter", "Lena Haß", "Leoni Pries", "Tabea Linnemann", "Helen Heindorf"]
-    },
-    {
-      name: "Tisch 8",
-      guests: ["Pia Matzen", "Nick Rodacker", "Felix Ilgenstein", "Olli", "Paulina Gosch", "Laura Mansberg", "Marit Kusche"]
-    },
-    {
-      name: "Tisch 9",
-      guests: ["Yvonn Biemann", "Sonja Roelke", "Jörg Groß", "Mariatta Waldeck", "Rasmus Waldeck", "Maike Waldeck", "Tina Haut", "Geli Matthiesen", "Andrea Pahl", "Dominik Biemann", "Marc Roelke", "Regina Groß", "Finn Waldeck", "Christin", "Burkhard Waldeck", "Wolfgang Haut", "Jörg Matthiesen", "Michael Pahl"]
-    },
-    {
-      name: "Tisch 10",
-      guests: ["Oke Pahl", "Mads Pahl", "Finn Matthiesen", "Anna Maria Haut", "Nele Kittelmann", "Bent Matthiesen", "Lina Matthiesen", "Juliane Haut"]
-    }
+    { number: "1", guests: ["Hoang Luong Duc", "Sina Ziegler", "Justus Lemp", "Hannah Meister", "Finn Pietsch", "Lauritz Heller", "Jana"] },
+    { number: "2", guests: ["Steffen Henschel", "Leni Fröhlich", "Maxim Fröhlich", "Lahja Zoé", "Bastian Bock", "Martin Fröhlich", "Larissa Fröhlich", "Nico Kaczmarczyk", "Alina Bock"] },
+    { number: "3", guests: ["Tarek Fiebrandt", "Lynn Buttkus", "Greta Thürnau", "Max Peleikis", "Patricia", "Max Schuldt", "Nele Walter", "Torge Ramm", "Jan-Philipp Scheibe", "Anneke Laß", "Mats Timm", "Wencke Bock"] },
+    { number: "4", guests: ["Heike Thürnau", "Dirk Groß", "Maren Gottschlich", "Sven Thürnau", "Petra Groß", "Stefan Gottschlich"] },
+    { number: "5", guests: ["Jan Groß-Ziegler", "Moritz Gottschlich", "Tim", "Isa", "Sabine Gelhar", "Jan Gelhar", "Evy Groß-Ziegler", "Tara Spindler", "Niklas Warnecke", "Laura Warnecke", "Moritz Supinski", "Elli Bothe"] },
+    { number: "6", guests: ["Nicole Pahl", "Christian Schäfer", "Oma Moni", "Kerstin Drömann", "Holger Warnecke", "Stephan Pahl", "Martina Schäfer", "Oma Anne", "Johannes Drömann", "Babette Lindacher-Weis"] },
+    { number: "7", guests: ["Louisa Schlüter", "Lena Haß", "Leoni Pries", "Tabea Linnemann", "Helen Heindorf"] },
+    { number: "8", guests: ["Pia Matzen", "Nick Rodacker", "Felix Ilgenstein", "Olli", "Paulina Gosch", "Laura Mansberg", "Marit Kusche"] },
+    { number: "9", guests: ["Yvonn Biemann", "Sonja Roelke", "Jörg Groß", "Mariatta Waldeck", "Rasmus Waldeck", "Maike Waldeck", "Tina Haut", "Geli Matthiesen", "Andrea Pahl", "Dominik Biemann", "Marc Roelke", "Regina Groß", "Finn Waldeck", "Christin", "Burkhard Waldeck", "Wolfgang Haut", "Jörg Matthiesen", "Michael Pahl"] },
+    { number: "10", guests: ["Oke Pahl", "Mads Pahl", "Finn Matthiesen", "Anna Maria Haut", "Nele Kittelmann", "Bent Matthiesen", "Lina Matthiesen", "Juliane Haut"] }
   ];
 
-  const grid = document.getElementById('tablesGrid');
   const searchInput = document.getElementById('search');
-  const clearBtn = document.getElementById('clearBtn');
-  const resultBanner = document.getElementById('resultBanner');
+  const clearBtn    = document.getElementById('clearBtn');
+  const resultArea  = document.getElementById('resultArea');
 
-  function renderTables(query) {
-    query = query.trim().toLowerCase();
-    grid.innerHTML = '';
-    let totalMatches = 0;
-    let matchTableName = '';
+  function norm(str) {
+    return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+  }
 
-    tables.forEach(t => {
-      const card = document.createElement('div');
-      card.className = 'table-card';
+  function firstName(name) { return name.split(' ')[0]; }
 
-      // header
-      const header = document.createElement('div');
-      header.className = 'table-header';
-      const nameEl = document.createElement('span');
-      nameEl.className = 'table-name';
-      nameEl.textContent = t.name;
-      const countEl = document.createElement('span');
-      countEl.className = 'table-count';
-      countEl.textContent = t.guests.filter(g => !g.startsWith('—')).length + ' Gäste';
-      header.appendChild(nameEl);
-      header.appendChild(countEl);
-      card.appendChild(header);
+  function showResult(guest, table) {
+    const first = firstName(guest);
+    const partnersHTML = table.guests.map(g =>
+      `<li class="${g === guest ? 'me' : ''}">${g === guest ? '▸ ' : ''}${g}</li>`
+    ).join('');
 
-      const ul = document.createElement('ul');
-      ul.className = 'guest-list';
+    resultArea.innerHTML = `
+      <div class="result-card">
+        <div class="card-top">
+          <p class="greeting">Hallo ${first},<br>schön dass du dabei bist!</p>
+          <div class="table-badge">
+            <span class="label">Dein Tisch</span>
+            <span class="number">${table.number}</span>
+          </div>
+          <div class="divider"></div>
+          <p class="message">Wir freuen uns riesig, diesen besonderen Tag<br>gemeinsam mit dir zu feiern. ♡</p>
+        </div>
+        <div class="card-bottom">
+          <p class="partners-label">Deine Tischpartner</p>
+          <ul class="partners-list">${partnersHTML}</ul>
+        </div>
+      </div>`;
+  }
 
-      let hasMatch = false;
-      t.guests.forEach(g => {
-        const li = document.createElement('li');
-        const isCouple = t.couple && t.couple.some(c => g === c);
-        const isFrei = g.startsWith('—');
-        li.className = 'guest-item' + (isFrei ? ' frei' : '') + (isCouple ? ' couple' : '');
-        li.textContent = g;
+  function search(query) {
+    query = query.trim();
+    resultArea.innerHTML = '';
+    if (!query) return;
 
-        if (query && !isFrei) {
-          const normalized = g.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-          const queryNorm = query.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-          if (normalized.includes(queryNorm)) {
-            li.classList.add('match');
-            hasMatch = true;
-            totalMatches++;
-            matchTableName = t.name;
-          }
+    const qNorm = norm(query);
+
+    // Alle Treffer sammeln
+    const matches = [];
+    for (const table of tables) {
+      for (const guest of table.guests) {
+        if (norm(guest).includes(qNorm)) {
+          matches.push({ guest, table });
         }
-        ul.appendChild(li);
-      });
-
-      card.appendChild(ul);
-
-      if (query) {
-        card.classList.add(hasMatch ? 'highlighted' : 'dimmed');
       }
-
-      grid.appendChild(card);
-    });
-
-    // banner
-    if (!query) {
-      resultBanner.innerHTML = '';
-    } else if (totalMatches === 0) {
-      resultBanner.innerHTML = 'Kein Gast gefunden.';
-    } else if (totalMatches === 1) {
-      resultBanner.innerHTML = `Gefunden bei <strong>${matchTableName}</strong>`;
-    } else {
-      resultBanner.innerHTML = `${totalMatches} Treffer gefunden`;
     }
+
+    if (matches.length === 0) {
+      resultArea.innerHTML = `
+        <div class="not-found">
+          <em>Name nicht gefunden</em>
+          Bitte überprüfe die Schreibweise oder frag Tim &amp; Isa.
+        </div>`;
+    } else if (matches.length === 1) {
+      showResult(matches[0].guest, matches[0].table);
+    } else {
+      // Exakter Treffer? Dann direkt anzeigen
+      const exact = matches.filter(m => norm(m.guest) === qNorm);
+      if (exact.length === 1) {
+        showResult(exact[0].guest, exact[0].table);
+        return;
+      }
+      // Mehrere Möglichkeiten anzeigen
+      const btns = matches.map(m => `
+        <button class="suggestion-btn" onclick="selectGuest('${m.guest.replace(/'/g, "\\'")}', '${m.table.number}')">
+          <span class="s-name">${m.guest}</span>
+          <span class="s-table">Tisch ${m.table.number}</span>
+        </button>`).join('');
+      resultArea.innerHTML = `
+        <p class="multi-label">Meinst du …?</p>
+        <div class="suggestions">${btns}</div>`;
+    }
+  }
+
+  function selectGuest(guestName, tableNumber) {
+    const table = tables.find(t => t.number === tableNumber);
+    showResult(guestName, table);
+    searchInput.value = guestName;
   }
 
   searchInput.addEventListener('input', () => {
     const q = searchInput.value;
     clearBtn.classList.toggle('visible', q.length > 0);
-    renderTables(q);
+    search(q);
   });
 
   clearBtn.addEventListener('click', () => {
     searchInput.value = '';
     clearBtn.classList.remove('visible');
-    resultBanner.innerHTML = '';
-    renderTables('');
+    resultArea.innerHTML = '';
     searchInput.focus();
   });
-
-  renderTables('');
 </script>
 </body>
 </html>
