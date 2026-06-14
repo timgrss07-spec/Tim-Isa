@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tim & Isa · 11. Juli 2026 · Sitzplan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream:   #faf7f2;
+      --beige:   #ede8df;
+      --beige2:  #ddd5c6;
+      --sand:    #c8bba8;
+      --brown:   #8a7560;
+      --dark:    #3d2e22;
+      --gold:    #b89a6a;
+      --white:   #ffffff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--cream);
+      color: var(--dark);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      text-align: center;
+      padding: 4rem 1.5rem 2.5rem;
+      background: var(--white);
+      border-bottom: 1px solid var(--beige2);
+    }
+    header::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 1px;
+      background: var(--gold);
+      margin: 1.5rem auto 0;
+    }
+    .eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--dark);
+    }
+    .date {
+      margin-top: 0.6rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      color: var(--brown);
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    .search-wrap {
+      width: 100%;
+      max-width: 440px;
+    }
+    .search-label {
+      display: block;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--brown);
+      margin-bottom: 0.6rem;
+      text-align: center;
+    }
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: var(--white);
+      border: 1px solid var(--beige2);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .search-box input {
+      flex: 1;
+      padding: 0.95rem 1.1rem;
+      border: none;
+      outline: none;
+      font-family: 'Jost', sans-serif;
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--dark);
+      background: transparent;
+    }
+    .search-box input::placeholder { color: var(--sand); }
+    .clear-btn {
+      background: none;
+      border: none;
+      padding: 0 1rem;
+      cursor: pointer;
+      color: var(--sand);
+      font-size: 1.1rem;
+      line-height: 1;
+      display: none;
+    }
+    .clear-btn.visible { display: block; }
+
+    .result-area {
+      margin-top: 2rem;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    /* ── Mehrere Treffer ── */
+    .multi-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--brown);
+      text-align: center;
+      margin-bottom: 0.75rem;
+    }
+    .suggestions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .suggestion-btn {
+      background: var(--white);
+      border: 1px solid var(--beige2);
+      border-radius: 2px;
+      padding: 0.8rem 1.1rem;
+      text-align: left;
+      cursor: pointer;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--dark);
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .suggestion-btn:hover {
+      border-color: var(--gold);
+      background: var(--beige);
+    }
+    .suggestion-btn .s-name { display: block; }
+    .suggestion-btn .s-table {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: var(--sand);
+      text-transform: uppercase;
+      margin-top: 0.15rem;
+    }
+
+    /* ── Ergebnis-Karte ── */
+    .result-card {
+      background: var(--white);
+      border: 1px solid var(--beige2);
+      border-radius: 3px;
+      overflow: hidden;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-top {
+      padding: 2rem 2rem 1.75rem;
+      text-align: center;
+      border-bottom: 1px solid var(--beige2);
+    }
+    .greeting {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.4rem, 4vw, 1.9rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--dark);
+      line-height: 1.35;
+      margin-bottom: 1.25rem;
+    }
+    .table-badge {
+      display: inline-block;
+      background: var(--beige);
+      border: 1px solid var(--beige2);
+      border-radius: 2px;
+      padding: 0.75rem 2rem;
+      margin-bottom: 1.25rem;
+    }
+    .table-badge .label {
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--brown);
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+    .table-badge .number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      font-weight: 300;
+      color: var(--dark);
+      line-height: 1;
+    }
+    .divider {
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+      margin: 0 auto 1rem;
+    }
+    .message {
+      font-size: 0.85rem;
+      color: var(--brown);
+      line-height: 1.7;
+    }
+
+    /* ── Tischpartner ── */
+    .card-bottom {
+      padding: 1.25rem 1.5rem 1.5rem;
+    }
+    .partners-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sand);
+      margin-bottom: 0.85rem;
+      text-align: center;
+    }
+    .partners-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .partners-list li {
+      padding: 0.4rem 0.6rem;
+      font-size: 0.88rem;
+      border-bottom: 1px solid var(--cream);
+      color: var(--dark);
+    }
+    .partners-list li:last-child { border-bottom: none; }
+    .partners-list li.me {
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    /* ── Nicht gefunden ── */
+    .not-found {
+      text-align: center;
+      color: var(--sand);
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      margin-top: 0.5rem;
+    }
+    .not-found em {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--brown);
+      margin-bottom: 0.4rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sand);
+      border-top: 1px solid var(--beige2);
+    }
+    footer span { color: var(--gold); }
+  </style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Sitzplan · Blossom</p>
+  <h1>Tim &amp; Isa</h1>
+  <p class="date">11. Juli 2026</p>
+</header>
+
+<main>
+  <div class="search-wrap">
+    <label class="search-label" for="search">Deinen Namen eingeben</label>
+    <div class="search-box">
+      <input id="search" type="text" placeholder="z.B. Maria Muster …" autocomplete="off" />
+      <button class="clear-btn" id="clearBtn" aria-label="Suche löschen">✕</button>
+    </div>
+  </div>
+  <div class="result-area" id="resultArea"></div>
+</main>
+
+<footer>
+  Herzlichen Glückwunsch &nbsp;<span>♡</span>&nbsp; Wir freuen uns auf euch
+</footer>
+
+<script>
+  const tables = [
+    { number: "1", guests: ["Hoang Luong Duc", "Sina Ziegler", "Justus Lemp", "Hannah Meister", "Finn Pietsch", "Lauritz Heller", "Jana"] },
+    { number: "2", guests: ["Steffen Henschel", "Leni Fröhlich", "Maxim Fröhlich", "Lahja Zoé", "Bastian Bock", "Martin Fröhlich", "Larissa Fröhlich", "Nico Kaczmarczyk", "Alina Bock"] },
+    { number: "3", guests: ["Tarek Fiebrandt", "Lynn Buttkus", "Greta Thürnau", "Max Peleikis", "Patricia", "Max Schuldt", "Nele Walter", "Torge Ramm", "Jan-Philipp Scheibe", "Anneke Laß", "Mats Timm", "Wencke Bock"] },
+    { number: "4", guests: ["Heike Thürnau", "Dirk Groß", "Maren Gottschlich", "Sven Thürnau", "Petra Groß", "Stefan Gottschlich"] },
+    { number: "5", guests: ["Jan Groß-Ziegler", "Moritz Gottschlich", "Tim", "Isa", "Sabine Gelhar", "Jan Gelhar", "Evy Groß-Ziegler", "Tara Spindler", "Niklas Warnecke", "Laura Warnecke", "Moritz Supinski", "Elli Bothe"] },
+    { number: "6", guests: ["Nicole Pahl", "Christian Schäfer", "Oma Moni", "Kerstin Drömann", "Holger Warnecke", "Stephan Pahl", "Martina Schäfer", "Oma Anne", "Johannes Drömann", "Babette Lindacher-Weis"] },
+    { number: "7", guests: ["Louisa Schlüter", "Lena Haß", "Leoni Pries", "Tabea Linnemann", "Helen Heindorf"] },
+    { number: "8", guests: ["Pia Matzen", "Nick Rodacker", "Felix Ilgenstein", "Olli", "Paulina Gosch", "Laura Mansberg", "Marit Kusche"] },
+    { number: "9", guests: ["Yvonn Biemann", "Sonja Roelke", "Jörg Groß", "Mariatta Waldeck", "Rasmus Waldeck", "Maike Waldeck", "Tina Haut", "Geli Matthiesen", "Andrea Pahl", "Dominik Biemann", "Marc Roelke", "Regina Groß", "Finn Waldeck", "Christin", "Burkhard Waldeck", "Wolfgang Haut", "Jörg Matthiesen", "Michael Pahl"] },
+    { number: "10", guests: ["Oke Pahl", "Mads Pahl", "Finn Matthiesen", "Anna Maria Haut", "Nele Kittelmann", "Bent Matthiesen", "Lina Matthiesen", "Juliane Haut"] }
+  ];
+
+  const searchInput = document.getElementById('search');
+  const clearBtn    = document.getElementById('clearBtn');
+  const resultArea  = document.getElementById('resultArea');
+
+  function norm(str) {
+    return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+  }
+
+  function firstName(name) { return name.split(' ')[0]; }
+
+  function showResult(guest, table) {
+    const first = firstName(guest);
+    const partnersHTML = table.guests.map(g =>
+      `<li class="${g === guest ? 'me' : ''}">${g === guest ? '▸ ' : ''}${g}</li>`
+    ).join('');
+
+    resultArea.innerHTML = `
+      <div class="result-card">
+        <div class="card-top">
+          <p class="greeting">Hallo ${first},<br>schön dass du dabei bist!</p>
+          <div class="table-badge">
+            <span class="label">Dein Tisch</span>
+            <span class="number">${table.number}</span>
+          </div>
+          <div class="divider"></div>
+          <p class="message">Wir freuen uns riesig, diesen besonderen Tag<br>gemeinsam mit dir zu feiern. ♡</p>
+        </div>
+        <div class="card-bottom">
+          <p class="partners-label">Deine Tischpartner</p>
+          <ul class="partners-list">${partnersHTML}</ul>
+        </div>
+      </div>`;
+  }
+
+  function search(query) {
+    query = query.trim();
+    resultArea.innerHTML = '';
+    if (!query) return;
+
+    const qNorm = norm(query);
+
+    // Alle Treffer sammeln
+    const matches = [];
+    for (const table of tables) {
+      for (const guest of table.guests) {
+        if (norm(guest).includes(qNorm)) {
+          matches.push({ guest, table });
+        }
+      }
+    }
+
+    if (matches.length === 0) {
+      resultArea.innerHTML = `
+        <div class="not-found">
+          <em>Name nicht gefunden</em>
+          Bitte überprüfe die Schreibweise oder frag Tim &amp; Isa.
+        </div>`;
+    } else if (matches.length === 1) {
+      showResult(matches[0].guest, matches[0].table);
+    } else {
+      // Exakter Treffer? Dann direkt anzeigen
+      const exact = matches.filter(m => norm(m.guest) === qNorm);
+      if (exact.length === 1) {
+        showResult(exact[0].guest, exact[0].table);
+        return;
+      }
+      // Mehrere Möglichkeiten anzeigen
+      const btns = matches.map(m => `
+        <button class="suggestion-btn" onclick="selectGuest('${m.guest.replace(/'/g, "\\'")}', '${m.table.number}')">
+          <span class="s-name">${m.guest}</span>
+          <span class="s-table">Tisch ${m.table.number}</span>
+        </button>`).join('');
+      resultArea.innerHTML = `
+        <p class="multi-label">Meinst du …?</p>
+        <div class="suggestions">${btns}</div>`;
+    }
+  }
+
+  function selectGuest(guestName, tableNumber) {
+    const table = tables.find(t => t.number === tableNumber);
+    showResult(guestName, table);
+    searchInput.value = guestName;
+  }
+
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value;
+    clearBtn.classList.toggle('visible', q.length > 0);
+    search(q);
+  });
+
+  clearBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    clearBtn.classList.remove('visible');
+    resultArea.innerHTML = '';
+    searchInput.focus();
+  });
+</script>
+</body>
+</html>
